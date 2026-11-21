@@ -1,0 +1,16 @@
+# Render Blueprint for 🎨 ओळखा पाहू! 👀 – Draw & Guess Battle
+services:
+  - type: web
+    name: olakha-pahu
+    runtime: node
+    plan: free
+    region: singapore
+    buildCommand: npm install
+    startCommand: node server/index.js
+    healthCheckPath: /healthz
+    autoDeploy: true
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000

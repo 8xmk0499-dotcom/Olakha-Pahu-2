@@ -1,0 +1,18 @@
+{
+  "name": "🎨 ओळखा पाहू! 👀 – Draw & Guess Battle",
+  "short_name": "ओळखा पाहू!",
+  "description": "मराठी ऑनलाइन मल्टिप्लेअर ड्रॉ अँड गेस पार्टी गेम",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#F8F9FE",
+  "theme_color": "#6366F1",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "192x192 512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

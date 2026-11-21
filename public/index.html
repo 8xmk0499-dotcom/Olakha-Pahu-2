@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover, interactive-widget=resizes-content">
+  <title>🎨 ओळखा पाहू! 👀 – Draw & Guess Battle</title>
+
+  <!-- SEO & Social Sharing Previews -->
+  <meta name="description" content="🎨 ओळखा पाहू! 👀 (Draw & Guess Battle) – मित्रांसोबत चित्रे काढा आणि गुप्त शब्द ओळखा! अस्सल मराठी ऑनलाइन मल्टिप्लेअर पार्टी गेम.">
+  <meta property="og:title" content="🎨 ओळखा पाहू! 👀 – Draw & Guess Battle">
+  <meta property="og:description" content="चित्रे काढा, शब्द ओळखा आणि मित्रांसोबत धम्माल मजा करा! Best Indian Multiplayer Drawing Game.">
+  <meta property="og:type" content="game">
+  <meta property="og:image" content="/icon.svg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="🎨 ओळखा पाहू! 👀 – Draw & Guess Battle">
+  <meta name="twitter:description" content="मराठी ऑनलाइन मल्टिप्लेअर ड्रॉ अँड गेस पार्टी गेम!">
+  <meta name="theme-color" content="#6366F1">
+  <link rel="icon" type="image/svg+xml" href="/icon.svg">
+  <link rel="apple-touch-icon" href="/icon.svg">
+  <link rel="manifest" href="/manifest.webmanifest">
+
+  <!-- Google Fonts: Baloo 2 (Devanagari & Latin) and Noto Sans Devanagari -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800;900&family=Noto+Sans+Devanagari:wght@500;700;900&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <div id="app">
+    <!-- Main Top Navigation -->
+    <header class="app-header">
+      <div class="brand" onclick="window.location.href='/'">
+        <img src="/icon.svg" alt="ओळखा पाहू! लोगो" class="brand-icon">
+        <div class="brand-text">
+          <span class="brand-title">🎨 ओळखा पाहू! 👀</span>
+          <span class="brand-subtitle">Draw & Guess Battle</span>
+        </div>
+      </div>
+      <div class="header-actions">
+        <!-- Audio Mute/Unmute Toggle -->
+        <button id="btn-toggle-sound" class="icon-btn" title="आवाज बंद/सुरू करा" aria-label="Toggle Sound">🔊</button>
+        <!-- Language Switcher -->
+        <div class="lang-toggle">
+          <button id="lang-btn-mr" class="lang-btn active">मराठी</button>
+          <button id="lang-btn-en" class="lang-btn">EN</button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Toast Notifications Container -->
+    <div id="toast-container"></div>
+
+    <!-- ======================================================================
+         SCREEN 1: MOBILE HOME SCREEN
+         ====================================================================== -->
+    <main id="screen-home" class="screen active">
+      <div class="home-container">
+        <!-- Hero Logo & Animated Floating Doodles -->
+        <div class="hero-art">
+          <img src="/icon.svg" alt="ओळखा पाहू! Logo">
+          <span class="floating-doodle doodle-1">✏️</span>
+          <span class="floating-doodle doodle-2">🎨</span>
+          <span class="floating-doodle doodle-3">✨</span>
+        </div>
+
+        <p class="home-tagline" data-i18n="tagline">चित्रे काढा, शब्द ओळखा आणि मित्रांसोबत धम्माल मजा करा!</p>
+
+        <!-- Main Home Action Card -->
+        <div class="home-card">
+          <!-- Avatar Picker -->
+          <div class="input-group">
+            <label class="avatar-selector-label" data-i18n="chooseAvatar">तुमचा अवतार निवडा:</label>
+            <div id="avatar-grid" class="avatar-grid"></div>
+          </div>
+
+          <!-- Player Name -->
+          <div class="input-group">
+            <input type="text" id="input-player-name" class="form-input" maxlength="16" placeholder="तुमचे नाव प्रविष्ट करा" data-i18n-placeholder="yourNamePlaceholder" autocomplete="off">
+          </div>
+
+          <!-- Create Room Button -->
+          <button id="btn-create-room" class="btn btn-coral">
+            <span data-i18n="createRoom">खोली तयार करा 🚀</span>
+          </button>
+
+          <div class="divider-row">
+            <span>किंवा खोली कोड प्रविष्ट करा</span>
+          </div>
+
+          <!-- Join Room Input & Button -->
+          <div class="input-group">
+            <input type="text" id="input-room-code" class="form-input uppercase" maxlength="6" placeholder="खोली कोड (उदा. MAZA)" data-i18n-placeholder="roomCodePlaceholder" autocomplete="off">
+          </div>
+
+          <button id="btn-join-room" class="btn btn-primary">
+            <span data-i18n="joinRoom">खोलीत सामील व्हा 🔑</span>
+          </button>
+        </div>
+
+        <!-- How to Play Instructions Button -->
+        <button id="btn-open-rules" class="btn btn-secondary">
+          <span data-i18n="howToPlay">कसे खेळायचे? 📖</span>
+        </button>
+      </div>
+    </main>
+
+    <!-- ======================================================================
+         SCREEN 2: MOBILE WAITING LOBBY
+         ====================================================================== -->
+    <main id="screen-lobby" class="screen">
+      <div class="lobby-container">
+        <!-- Room Code & Sharing -->
+        <div class="room-code-banner">
+          <span class="room-code-label" data-i18n="roomCodeLabel">खोली कोड</span>
+          <span id="lobby-room-code" class="room-code-value">----</span>
+          <div class="lobby-share-actions">
+            <button id="btn-copy-code" class="btn btn-secondary" style="font-size:0.9rem;">
+              <span data-i18n="copyCode">कोड कॉपी करा 📋</span>
+            </button>
+            <button id="btn-share-whatsapp" class="btn btn-whatsapp" style="font-size:0.9rem;">
+              <span data-i18n="shareWhatsApp">व्हॉट्सअ‍ॅपवर पाठवा 💬</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Player List -->
+        <div class="player-list-section">
+          <div class="section-header">
+            <span data-i18n="connectedPlayers">खेळाडू</span>
+            <span id="lobby-player-count" class="player-count-badge">0/8</span>
+          </div>
+          <div id="lobby-players-list" class="players-grid"></div>
+        </div>
+
+        <!-- Host Settings Panel (Visible to Host) -->
+        <div id="lobby-host-settings" class="lobby-settings-card">
+          <div style="font-weight: 800; font-size: 0.95rem;" data-i18n="settingsTitle">खोलीच्या सेटिंग्ज ⚙️</div>
+          <div class="setting-row">
+            <span class="setting-label" data-i18n="roundDuration">वेळ प्रति फेरी:</span>
+            <select id="select-round-time" class="setting-select">
+              <option value="60">60 सेकंद</option>
+              <option value="80" selected>80 सेकंद (Recommended)</option>
+              <option value="100">100 सेकंद</option>
+            </select>
+          </div>
+          <div class="setting-row">
+            <span class="setting-label" data-i18n="totalRounds">एकूण फेऱ्या:</span>
+            <select id="select-rounds" class="setting-select">
+              <option value="2">2 फेऱ्या</option>
+              <option value="3" selected>3 फेऱ्या</option>
+              <option value="5">5 फेऱ्या</option>
+            </select>
+          </div>
+          <div class="setting-row">
+            <span class="setting-label" data-i18n="wordPack">शब्द प्रकार:</span>
+            <select id="select-word-pack" class="setting-select">
+              <option value="all" selected>सर्व मिश्र शब्द</option>
+              <option value="खाद्यपदार्थ">खाद्यपदार्थ व मिठाई</option>
+              <option value="वस्तू">वस्तू आणि वाहने</option>
+              <option value="प्राणी">प्राणी आणि पक्षी</option>
+              <option value="संस्कृती">संस्कृती व सण</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Start Game Button -->
+        <button id="btn-start-game" class="btn btn-coral" style="min-height: 56px;">
+          <span data-i18n="startGame">खेळ सुरू करा 🎮</span>
+        </button>
+      </div>
+    </main>
+
+    <!-- ======================================================================
+         SCREEN 3: MOBILE DRAWING & GUESSING ARENA
+         ====================================================================== -->
+    <main id="screen-game" class="screen">
+      <!-- Game Top Bar -->
+      <div class="game-top-bar">
+        <!-- 80-Second Countdown Timer Pill -->
+        <div id="game-timer-pill" class="timer-pill">
+          <span>⏱️</span>
+          <span id="game-timer-val">80</span>
+        </div>
+
+        <!-- Word / Masked Word Display -->
+        <div id="game-word-display" class="word-display-area">
+          <div class="masked-word">_ _ _ _ _</div>
+          <div class="word-hint-badge">संकेत लोड होत आहे...</div>
+        </div>
+
+        <!-- Guessed Counter Badge -->
+        <div id="game-guessed-count" class="guessed-counter-badge">
+          🎯 0/0 ओळखले
+        </div>
+      </div>
+
+      <!-- Canvas Area: Maximized for mobile touch -->
+      <div class="canvas-wrapper">
+        <canvas id="drawing-canvas"></canvas>
+      </div>
+
+      <!-- Drawer Compact Mobile Toolbar (Visible only to drawer) -->
+      <div id="drawer-toolbar" class="drawer-toolbar">
+        <div class="tools-row">
+          <button class="tool-chip selected" data-tool="brush" title="ब्रश">🖌️</button>
+          <button class="tool-chip" data-tool="pencil" title="पेन्सिल">✏️</button>
+          <button class="tool-chip" data-tool="eraser" title="खोडरबर">🧼</button>
+          <button class="tool-chip" data-size="4" title="बारीक">▪️</button>
+          <button class="tool-chip selected" data-size="8" title="मध्यम">◾</button>
+          <button class="tool-chip" data-size="16" title="जाड">⬛</button>
+          <button id="btn-undo" class="tool-chip" title="मागे (Undo)">↩️</button>
+          <button id="btn-redo" class="tool-chip" title="पुढे (Redo)">↪️</button>
+          <button id="btn-clear-canvas" class="tool-chip" title="कॅनव्हास साफ करा" style="color:#EF4444;">🗑️</button>
+        </div>
+
+        <!-- Touch-Friendly Color Palette Swatches -->
+        <div id="color-swatches" class="color-swatches-grid"></div>
+      </div>
+
+      <!-- Guesser Experience: Live Chat Feed & Sticky Guess Input -->
+      <div class="guesser-section">
+        <div id="chat-messages" class="chat-messages">
+          <div class="chat-bubble system">🎨 ओळखा पाहू! 👀 मध्ये आपले स्वागत आहे!</div>
+        </div>
+
+        <div class="guess-input-bar">
+          <input type="text" id="input-guess" class="guess-input" placeholder="येथे तुमचा अंदाज टाईप करा..." data-i18n-placeholder="guessPlaceholder" autocomplete="off">
+          <button id="btn-submit-guess" class="btn btn-primary guess-submit-btn">
+            <span data-i18n="submitGuess">ओळखा! 🎯</span>
+          </button>
+        </div>
+      </div>
+    </main>
+
+    <!-- ======================================================================
+         SCREEN 4: GAME OVER & PODIUM
+         ====================================================================== -->
+    <main id="screen-gameover" class="screen">
+      <div class="gameover-container">
+        <h2 class="modal-title" data-i18n="gameOverTitle">खेळ संपला! महाविजेते 🏆</h2>
+
+        <!-- 3D Celebratory Podium -->
+        <div id="podium-container" class="podium-section"></div>
+
+        <!-- Buttons -->
+        <button id="btn-play-again" class="btn btn-coral">
+          <span data-i18n="playAgain">पुन्हा खेळा 🔄</span>
+        </button>
+        <button id="btn-share-gameover" class="btn btn-whatsapp">
+          <span data-i18n="shareVictory">विजय शेअर करा 📤</span>
+        </button>
+      </div>
+    </main>
+
+    <!-- ======================================================================
+         MODAL 1: DRAWER WORD PICKER (15s timer)
+         ====================================================================== -->
+    <div id="modal-word-picker" class="modal-overlay">
+      <div class="modal-card">
+        <h3 class="modal-title" data-i18n="chooseAWord">चित्र काढण्यासाठी एक शब्द निवडा:</h3>
+        <div id="word-choices-list" class="word-choices-grid"></div>
+      </div>
+    </div>
+
+    <!-- ======================================================================
+         MODAL 2: GAME RULES / INSTRUCTIONS
+         ====================================================================== -->
+    <div id="modal-rules" class="modal-overlay">
+      <div class="modal-card">
+        <h3 class="modal-title" data-i18n="rulesTitle">खेळाचे नियम आणि माहिती</h3>
+
+        <div class="rule-item">
+          <div class="rule-title" data-i18n="rule1Title">१. चित्र काढा 🖌️</div>
+          <div class="rule-desc" data-i18n="rule1Desc">तुमच्या पाळीला दिलेल्या ३ शब्दांपैकी एक निवडा आणि बोटाने कॅनव्हासवर चित्र काढा.</div>
+        </div>
+
+        <div class="rule-item">
+          <div class="rule-title" data-i18n="rule2Title">२. शब्द ओळखा 💡</div>
+          <div class="rule-desc" data-i18n="rule2Desc">दुसऱ्या खेळाडूचे चित्र पाहून खालील बॉक्समध्ये अंदाज टाईप करा.</div>
+        </div>
+
+        <div class="rule-item">
+          <div class="rule-title" data-i18n="rule3Title">३. वेगवान अंदाज, जास्त गुण ⏱️</div>
+          <div class="rule-desc" data-i18n="rule3Desc">जेवढ्या लवकर ओळखाल तेवढे जास्त गुण मिळतील! चित्रकारालाही बोनस मिळतो.</div>
+        </div>
+
+        <div class="rule-item">
+          <div class="rule-title" data-i18n="rule4Title">४. अक्षरे लिहू नका 🚫</div>
+          <div class="rule-desc" data-i18n="rule4Desc">कॅनव्हासवर शब्द किंवा अक्षरे लिहू नका, फक्त चित्र काढून खेळाचा आनंद घ्या!</div>
+        </div>
+
+        <button id="btn-close-rules" class="btn btn-primary" style="margin-top: 8px;">
+          <span data-i18n="closeModal">समजले, चला खेळूया! 👍</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Client JavaScript dependencies -->
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/i18n.js"></script>
+  <script src="/audio.js"></script>
+  <script src="/canvas.js"></script>
+  <script src="/app.js"></script>
+</body>
+</html>

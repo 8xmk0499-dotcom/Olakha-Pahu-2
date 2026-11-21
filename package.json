@@ -1,0 +1,21 @@
+{
+  "name": "olakha-pahu",
+  "version": "1.0.0",
+  "description": "🎨 ओळखा पाहू! 👀 – Draw & Guess Battle (मराठी ऑनलाइन मल्टीप्लेअर पार्टी गेम)",
+  "main": "server/index.js",
+  "private": true,
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "start": "node server/index.js",
+    "test": "node --test server/test/game.test.js server/test/e2e.test.js"
+  },
+  "dependencies": {
+    "express": "^4.21.2",
+    "socket.io": "^4.8.1"
+  },
+  "devDependencies": {
+    "socket.io-client": "^4.8.4"
+  }
+}
